@@ -39,6 +39,7 @@ class App extends React.Component<object, AppState> {
         searchTerm,
       });
     } catch (error) {
+       console.error(error);
       this.setState({
         pokemons: [],
         loading: false,
