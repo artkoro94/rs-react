@@ -24,7 +24,9 @@ export class Results extends React.Component<ResultsProps> {
           <p className="status-message">No pokemons found.</p>
         )}
 
-        {!loading && !error && pokemons.length > 0 && <PokemonList pokemons={pokemons} />}
+        {!loading && !error && pokemons.length > 0 && (
+          <PokemonList pokemons={pokemons} />
+        )}
       </section>
     );
   }

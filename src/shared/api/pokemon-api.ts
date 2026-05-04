@@ -75,7 +75,9 @@ export const fetchPokemons = async (
     ];
   }
 
-  const response = await fetch(`${BASE_URL}?limit=${PAGE_LIMIT}&offset=${offset}`);
+  const response = await fetch(
+    `${BASE_URL}?limit=${PAGE_LIMIT}&offset=${offset}`
+  );
 
   if (!response.ok) {
     throw new Error('Failed to fetch pokemons');
@@ -83,5 +85,7 @@ export const fetchPokemons = async (
 
   const data: PokemonListResponse = await response.json();
 
-  return Promise.all(data.results.map((pokemon) => fetchPokemonDetails(pokemon.url)));
+  return Promise.all(
+    data.results.map((pokemon) => fetchPokemonDetails(pokemon.url))
+  );
 };
