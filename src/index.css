@@ -1,0 +1,157 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  color: #f8fafc;
+  background: #0f172a;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.app {
+  width: min(1100px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.header {
+  margin-bottom: 24px;
+  padding: 28px;
+  border: 1px solid #334155;
+  border-radius: 24px;
+  background: #111827;
+}
+
+.header h1 {
+  margin: 0 0 8px;
+  font-size: 40px;
+}
+
+.header p {
+  margin: 0;
+  color: #cbd5e1;
+}
+
+.search-section,
+.results-section {
+  margin-bottom: 24px;
+  padding: 24px;
+  border: 1px solid #334155;
+  border-radius: 24px;
+  background: #1e293b;
+}
+
+.search-form {
+  display: flex;
+  gap: 12px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 14px;
+  color: #f8fafc;
+  border: 1px solid #475569;
+  border-radius: 14px;
+  outline: none;
+  background: #020617;
+}
+
+.search-input:focus {
+  border-color: #38bdf8;
+}
+
+.button,
+.error-button {
+  padding: 12px 18px;
+  color: #020617;
+  border: none;
+  border-radius: 14px;
+  font-weight: 700;
+  background: #38bdf8;
+}
+
+.results-section h2 {
+  margin: 0 0 16px;
+}
+
+.pokemon-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.pokemon-card {
+  padding: 18px;
+  border: 1px solid #475569;
+  border-radius: 18px;
+  background: #020617;
+}
+
+.pokemon-card h3 {
+  margin: 0 0 10px;
+  text-transform: capitalize;
+}
+
+.pokemon-card p {
+  margin: 0;
+  color: #cbd5e1;
+}
+
+.status-message {
+  margin: 0;
+  color: #cbd5e1;
+}
+
+.error-message {
+  margin: 0;
+  color: #fca5a5;
+}
+
+.pagination {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.error-button {
+  background: #fb7185;
+}
+
+.fallback {
+  padding: 32px;
+  border: 1px solid #fb7185;
+  border-radius: 24px;
+  background: #1e293b;
+}
+
+.fallback h1 {
+  margin: 0 0 12px;
+}
+
+.fallback p {
+  margin: 0;
+  color: #cbd5e1;
+}
