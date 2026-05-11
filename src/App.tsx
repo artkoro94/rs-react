@@ -2,7 +2,7 @@ import React from 'react';
 import { ErrorBoundary } from './components/error-boundary';
 import { ErrorButton } from './components/error-button';
 import { Header } from './components/header';
-import { Results } from './components/results';
+import { Results } from './components/results/results';
 import { Search } from './components/search';
 import { fetchPokemons, type PokemonCardData } from './shared/api/pokemon-api';
 
