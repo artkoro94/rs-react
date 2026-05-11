@@ -1,6 +1,6 @@
 import React from 'react';
 import { ErrorBoundary } from './components/error-boundary/error-boundary';
-import { ErrorButton } from './components/error-button';
+import { ErrorButton } from './components/error-button/error-button';
 import { Header } from './components/header';
 import { Results } from './components/results/results';
 import { Search } from './components/search/search';
