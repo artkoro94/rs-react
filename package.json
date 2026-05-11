@@ -12,7 +12,8 @@
     "preview": "vite preview",
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "prepare": "husky"
   },
   "dependencies": {
     "react": "^19.2.5",
