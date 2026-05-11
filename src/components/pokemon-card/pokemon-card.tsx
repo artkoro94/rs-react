@@ -1,5 +1,5 @@
 import React from 'react';
-import type { PokemonCardData } from '../shared/api/pokemon-api';
+import type { PokemonCardData } from '../../shared/api/pokemon-api';
 
 interface PokemonCardProps {
   pokemon: PokemonCardData;

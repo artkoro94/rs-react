@@ -1,5 +1,5 @@
 import React from 'react';
-import { SEARCH_STORAGE_KEY } from '../shared/constants/storage';
+import { SEARCH_STORAGE_KEY } from '../../shared/constants/storage';
 
 interface SearchProps {
   onSearch: (searchTerm: string) => void;
