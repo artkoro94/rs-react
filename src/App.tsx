@@ -1,5 +1,5 @@
 import React from 'react';
-import { ErrorBoundary } from './components/error-boundary';
+import { ErrorBoundary } from './components/error-boundary/error-boundary';
 import { ErrorButton } from './components/error-button';
 import { Header } from './components/header';
 import { Results } from './components/results/results';
