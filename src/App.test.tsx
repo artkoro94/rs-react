@@ -81,9 +81,7 @@ describe('App', () => {
 
     render(<App />);
 
-    await waitFor(() => {
-      expect(mockedFetchPokemons).toHaveBeenCalledWith('', 0);
-    });
+    await screen.findByRole('heading', { name: pikachuMock.name });
 
     const searchInput = screen.getByPlaceholderText('pikachu');
     const searchButton = screen.getByRole('button', { name: 'Search' });
@@ -102,71 +100,82 @@ describe('App', () => {
     ).toBeInTheDocument();
   });
 
-  it('loads next page for current search term', async () => {
-    const user = userEvent.setup();
+it('loads next page when search mode is disabled', async () => {
+  const user = userEvent.setup();
 
-    localStorage.setItem(SEARCH_STORAGE_KEY, 'pikachu');
+  mockedFetchPokemons
+    .mockResolvedValueOnce([pikachuMock])
+    .mockResolvedValueOnce([bulbasaurMock]);
 
-    mockedFetchPokemons
-      .mockResolvedValueOnce([pikachuMock])
-      .mockResolvedValueOnce([bulbasaurMock]);
+  render(<App />);
 
-    render(<App />);
+  await screen.findByRole('heading', { name: pikachuMock.name });
 
-    await waitFor(() => {
-      expect(mockedFetchPokemons).toHaveBeenCalledWith('pikachu', 0);
-    });
+  const nextButton = screen.getByRole('button', { name: 'Next' });
 
-    await user.click(screen.getByRole('button', { name: 'Next' }));
-
-    await waitFor(() => {
-      expect(mockedFetchPokemons).toHaveBeenLastCalledWith('pikachu', 10);
-    });
-
-    expect(
-      await screen.findByRole('heading', { name: bulbasaurMock.name })
-    ).toBeInTheDocument();
+  await waitFor(() => {
+    expect(nextButton).not.toBeDisabled();
   });
 
-  it('loads previous page with zero as minimum offset', async () => {
-    const user = userEvent.setup();
+  await user.click(nextButton);
 
-    localStorage.setItem(SEARCH_STORAGE_KEY, 'pikachu');
-
-    mockedFetchPokemons
-      .mockResolvedValueOnce([pikachuMock])
-      .mockResolvedValueOnce([bulbasaurMock])
-      .mockResolvedValueOnce([pikachuMock]);
-
-    render(<App />);
-
-    await waitFor(() => {
-      expect(mockedFetchPokemons).toHaveBeenCalledWith('pikachu', 0);
-    });
-
-    await user.click(screen.getByRole('button', { name: 'Next' }));
-
-    await waitFor(() => {
-      expect(mockedFetchPokemons).toHaveBeenLastCalledWith('pikachu', 10);
-    });
-
-    await user.click(screen.getByRole('button', { name: 'Previous' }));
-
-    await waitFor(() => {
-      expect(mockedFetchPokemons).toHaveBeenLastCalledWith('pikachu', 0);
-    });
+  await waitFor(() => {
+    expect(mockedFetchPokemons).toHaveBeenLastCalledWith('', 10);
   });
 
-  it('disables previous button on first page', async () => {
-    localStorage.setItem(SEARCH_STORAGE_KEY, 'pikachu');
-    mockedFetchPokemons.mockResolvedValueOnce([pikachuMock]);
+  expect(
+    await screen.findByRole('heading', { name: bulbasaurMock.name })
+  ).toBeInTheDocument();
+});
 
-    render(<App />);
+it('loads previous page with zero as minimum offset', async () => {
+  const user = userEvent.setup();
 
-    await screen.findByRole('heading', { name: pikachuMock.name });
+  mockedFetchPokemons
+    .mockResolvedValueOnce([pikachuMock])
+    .mockResolvedValueOnce([bulbasaurMock])
+    .mockResolvedValueOnce([pikachuMock]);
 
-    expect(screen.getByRole('button', { name: 'Previous' })).toBeDisabled();
+  render(<App />);
+
+  await screen.findByRole('heading', { name: pikachuMock.name });
+
+  const nextButton = screen.getByRole('button', { name: 'Next' });
+
+  await waitFor(() => {
+    expect(nextButton).not.toBeDisabled();
   });
+
+  await user.click(nextButton);
+
+  await waitFor(() => {
+    expect(mockedFetchPokemons).toHaveBeenLastCalledWith('', 10);
+  });
+
+  await screen.findByRole('heading', { name: bulbasaurMock.name });
+
+  const previousButton = screen.getByRole('button', { name: 'Previous' });
+
+  await waitFor(() => {
+    expect(previousButton).not.toBeDisabled();
+  });
+
+  await user.click(previousButton);
+
+  await waitFor(() => {
+    expect(mockedFetchPokemons).toHaveBeenLastCalledWith('', 0);
+  });
+});
+
+it('disables previous button on first page when search mode is disabled', async () => {
+  mockedFetchPokemons.mockResolvedValueOnce([pikachuMock]);
+
+  render(<App />);
+
+  await screen.findByRole('heading', { name: pikachuMock.name });
+
+  expect(screen.getByRole('button', { name: 'Previous' })).toBeDisabled();
+});
 
   it('renders error message when API request fails', async () => {
     mockedFetchPokemons.mockRejectedValueOnce(new Error('API error'));
