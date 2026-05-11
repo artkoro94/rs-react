@@ -1,6 +1,6 @@
 import React from 'react';
 import type { PokemonCardData } from '../shared/api/pokemon-api';
-import { PokemonList } from './pokemon-list';
+import { PokemonList } from './pokemon-list/pokemon-list';
 
 interface ResultsProps {
   pokemons: PokemonCardData[];
