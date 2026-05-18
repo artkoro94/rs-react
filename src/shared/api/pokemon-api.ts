@@ -26,7 +26,6 @@ interface PokemonDetailsResponse {
 }
 
 const BASE_URL = 'https://pokeapi.co/api/v2/pokemon';
-
 const PAGE_LIMIT = 10;
 
 const getPokemonDescription = (pokemon: PokemonDetailsResponse): string => {
@@ -35,20 +34,28 @@ const getPokemonDescription = (pokemon: PokemonDetailsResponse): string => {
   return `Types: ${types}. Height: ${pokemon.height}. Weight: ${pokemon.weight}.`;
 };
 
-const fetchPokemonDetails = async (url: string): Promise<PokemonCardData> => {
+const fetchPokemonDetails = async (
+  url: string
+): Promise<PokemonCardData> => {
   const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error('Failed to fetch pokemon details');
   }
 
-  const data: PokemonDetailsResponse = await response.json();
+  const data = (await response.json()) as PokemonDetailsResponse;
 
   return {
     id: data.id,
     name: data.name,
     description: getPokemonDescription(data),
   };
+};
+
+export const fetchPokemonById = async (
+  pokemonId: number
+): Promise<PokemonCardData> => {
+  return fetchPokemonDetails(`${BASE_URL}/${pokemonId}`);
 };
 
 export const fetchPokemons = async (
@@ -64,7 +71,7 @@ export const fetchPokemons = async (
       throw new Error('Pokemon not found');
     }
 
-    const data: PokemonDetailsResponse = await response.json();
+    const data = (await response.json()) as PokemonDetailsResponse;
 
     return [
       {
@@ -83,7 +90,7 @@ export const fetchPokemons = async (
     throw new Error('Failed to fetch pokemons');
   }
 
-  const data: PokemonListResponse = await response.json();
+  const data = (await response.json()) as PokemonListResponse;
 
   return Promise.all(
     data.results.map((pokemon) => fetchPokemonDetails(pokemon.url))
