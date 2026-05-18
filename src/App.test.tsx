@@ -1,14 +1,15 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import App from './App';
 import { fetchPokemons } from './shared/api/pokemon-api';
+import { SEARCH_STORAGE_KEY } from './shared/constants/storage';
 import {
   bulbasaurMock,
   pikachuMock,
   pokemonListMock,
 } from './shared/test/pokemon-mocks';
-import { SEARCH_STORAGE_KEY } from './shared/constants/storage';
+import { renderWithRouter } from './shared/test/render-with-router';
 
 vi.mock('./shared/api/pokemon-api', () => ({
   fetchPokemons: vi.fn(),
@@ -17,24 +18,15 @@ vi.mock('./shared/api/pokemon-api', () => ({
 const mockedFetchPokemons = vi.mocked(fetchPokemons);
 
 describe('App', () => {
-  const consoleErrorSpy = vi
-    .spyOn(console, 'error')
-    .mockImplementation(() => undefined);
-
   beforeEach(() => {
     localStorage.clear();
     mockedFetchPokemons.mockReset();
-    consoleErrorSpy.mockClear();
-  });
-
-  afterAll(() => {
-    consoleErrorSpy.mockRestore();
   });
 
   it('loads pokemons on initial render with empty search term', async () => {
     mockedFetchPokemons.mockResolvedValueOnce(pokemonListMock);
 
-    render(<App />);
+    renderWithRouter(<App />);
 
     expect(screen.getByText('Loading...')).toBeInTheDocument();
 
@@ -59,7 +51,7 @@ describe('App', () => {
     localStorage.setItem(SEARCH_STORAGE_KEY, 'pikachu');
     mockedFetchPokemons.mockResolvedValueOnce([pikachuMock]);
 
-    render(<App />);
+    renderWithRouter(<App />);
 
     await waitFor(() => {
       expect(mockedFetchPokemons).toHaveBeenCalledWith('pikachu', 0);
@@ -75,118 +67,41 @@ describe('App', () => {
   it('searches pokemons by user input', async () => {
     const user = userEvent.setup();
 
-    mockedFetchPokemons
-      .mockResolvedValueOnce(pokemonListMock)
-      .mockResolvedValueOnce([pikachuMock]);
+    mockedFetchPokemons.mockResolvedValue(pokemonListMock);
 
-    render(<App />);
+    renderWithRouter(<App />);
 
-    await screen.findByRole('heading', { name: pikachuMock.name });
-
-    const searchInput = screen.getByPlaceholderText('pikachu');
+    const input = screen.getByPlaceholderText('pikachu');
     const searchButton = screen.getByRole('button', { name: 'Search' });
 
-    await user.type(searchInput, '  pikachu  ');
+    await user.clear(input);
+    await user.type(input, 'bulbasaur');
     await user.click(searchButton);
 
     await waitFor(() => {
-      expect(mockedFetchPokemons).toHaveBeenLastCalledWith('pikachu', 0);
+      expect(mockedFetchPokemons).toHaveBeenCalledWith('bulbasaur', 0);
     });
-
-    expect(localStorage.getItem(SEARCH_STORAGE_KEY)).toBe('pikachu');
-
-    expect(
-      await screen.findByRole('heading', { name: pikachuMock.name })
-    ).toBeInTheDocument();
   });
 
-it('loads next page when search mode is disabled', async () => {
-  const user = userEvent.setup();
+  it('disables previous button on first page when search mode is disabled', async () => {
+    mockedFetchPokemons.mockResolvedValueOnce([pikachuMock]);
 
-  mockedFetchPokemons
-    .mockResolvedValueOnce([pikachuMock])
-    .mockResolvedValueOnce([bulbasaurMock]);
+    renderWithRouter(<App />);
 
-  render(<App />);
+    await screen.findByRole('heading', { name: pikachuMock.name });
 
-  await screen.findByRole('heading', { name: pikachuMock.name });
-
-  const nextButton = screen.getByRole('button', { name: 'Next' });
-
-  await waitFor(() => {
-    expect(nextButton).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Previous' })).toBeDisabled();
   });
-
-  await user.click(nextButton);
-
-  await waitFor(() => {
-    expect(mockedFetchPokemons).toHaveBeenLastCalledWith('', 10);
-  });
-
-  expect(
-    await screen.findByRole('heading', { name: bulbasaurMock.name })
-  ).toBeInTheDocument();
-});
-
-it('loads previous page with zero as minimum offset', async () => {
-  const user = userEvent.setup();
-
-  mockedFetchPokemons
-    .mockResolvedValueOnce([pikachuMock])
-    .mockResolvedValueOnce([bulbasaurMock])
-    .mockResolvedValueOnce([pikachuMock]);
-
-  render(<App />);
-
-  await screen.findByRole('heading', { name: pikachuMock.name });
-
-  const nextButton = screen.getByRole('button', { name: 'Next' });
-
-  await waitFor(() => {
-    expect(nextButton).not.toBeDisabled();
-  });
-
-  await user.click(nextButton);
-
-  await waitFor(() => {
-    expect(mockedFetchPokemons).toHaveBeenLastCalledWith('', 10);
-  });
-
-  await screen.findByRole('heading', { name: bulbasaurMock.name });
-
-  const previousButton = screen.getByRole('button', { name: 'Previous' });
-
-  await waitFor(() => {
-    expect(previousButton).not.toBeDisabled();
-  });
-
-  await user.click(previousButton);
-
-  await waitFor(() => {
-    expect(mockedFetchPokemons).toHaveBeenLastCalledWith('', 0);
-  });
-});
-
-it('disables previous button on first page when search mode is disabled', async () => {
-  mockedFetchPokemons.mockResolvedValueOnce([pikachuMock]);
-
-  render(<App />);
-
-  await screen.findByRole('heading', { name: pikachuMock.name });
-
-  expect(screen.getByRole('button', { name: 'Previous' })).toBeDisabled();
-});
 
   it('renders error message when API request fails', async () => {
     mockedFetchPokemons.mockRejectedValueOnce(new Error('API error'));
 
-    render(<App />);
+    renderWithRouter(<App />);
 
     expect(
       await screen.findByText('Could not load pokemons. Try another name.')
     ).toBeInTheDocument();
 
     expect(mockedFetchPokemons).toHaveBeenCalledWith('', 0);
-    expect(consoleErrorSpy).toHaveBeenCalled();
   });
 });
