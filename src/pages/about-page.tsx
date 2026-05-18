@@ -7,7 +7,7 @@ export const AboutPage = () => {
         <h1>About</h1>
 
         <p>
-          This app was created by Artur as part of the RS School React course.
+          This app was created by @artkoro94 as part of the RS School React course.
         </p>
 
         <a

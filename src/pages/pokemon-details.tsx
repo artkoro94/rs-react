@@ -68,7 +68,24 @@ export const PokemonDetails = () => {
   }, [pokemonId]);
 
   return (
-    <aside className="details-panel">
+<aside className="details-panel">
+  {loading && <p className="status-message">Loading details...</p>}
+
+  {error && <p className="error-message">{error}</p>}
+
+  {!loading && !error && pokemon && (
+    <>
+      <div className="details-panel__content">
+        <img
+          className="details-panel__image"
+          src={pokemon.image}
+          alt={pokemon.name}
+        />
+
+        <h2>{pokemon.name}</h2>
+        <p>{pokemon.description}</p>
+      </div>
+
       <button
         className="details-panel__close"
         type="button"
@@ -76,23 +93,8 @@ export const PokemonDetails = () => {
       >
         Close
       </button>
-
-      {loading && <p className="status-message">Loading details...</p>}
-
-      {error && <p className="error-message">{error}</p>}
-
-      {!loading && !error && pokemon && (
-        <div className="details-panel__content">
-          <img
-            className="details-panel__image"
-            src={pokemon.image}
-            alt={pokemon.name}
-          />
-
-          <h2>{pokemon.name}</h2>
-          <p>{pokemon.description}</p>
-        </div>
-      )}
-    </aside>
+    </>
+  )}
+</aside>
   );
 };
