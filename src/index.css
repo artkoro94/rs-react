@@ -3,8 +3,8 @@
 }
 
 :root {
-  color: #111827;
-  background: #f8fafc;
+  color: #172554;
+  background: #fef9c3;
   font-family:
     Inter,
     system-ui,
@@ -18,7 +18,10 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: #f8fafc;
+  background:
+    radial-gradient(circle at top left, rgb(250 204 21 / 28%), transparent 34%),
+    radial-gradient(circle at top right, rgb(59 130 246 / 18%), transparent 30%),
+    linear-gradient(180deg, #fff7d6 0%, #eff6ff 52%, #f8fafc 100%);
 }
 
 button,
@@ -32,6 +35,7 @@ a {
     border-color 0.2s ease,
     background-color 0.2s ease,
     color 0.2s ease,
+    box-shadow 0.2s ease,
     transform 0.2s ease;
 }
 
@@ -56,10 +60,11 @@ button:disabled {
 .details-panel,
 .page-card,
 .fallback {
-  border: 1px solid #e5e7eb;
-  border-radius: 20px;
-  background: #ffffff;
-  box-shadow: 0 10px 30px rgb(15 23 42 / 6%);
+  border: 1px solid rgb(37 99 235 / 16%);
+  border-radius: 28px;
+  background: rgb(255 255 255 / 82%);
+  box-shadow: 0 18px 45px rgb(30 64 175 / 10%);
+  backdrop-filter: blur(12px);
 }
 
 .header {
@@ -72,10 +77,24 @@ button:disabled {
 }
 
 .header__logo {
-  color: #111827;
-  font-size: 28px;
-  font-weight: 800;
+  position: relative;
+  color: #1d4ed8;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
   text-decoration: none;
+}
+
+.header__logo::after {
+  content: '';
+  position: absolute;
+  right: -14px;
+  bottom: 5px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid #1d4ed8;
+  border-radius: 50%;
+  background: #facc15;
 }
 
 .header__nav {
@@ -85,16 +104,17 @@ button:disabled {
 }
 
 .header__link {
-  padding: 8px 12px;
-  color: #4b5563;
+  padding: 8px 13px;
+  color: #1e3a8a;
   border-radius: 999px;
+  font-weight: 700;
   text-decoration: none;
 }
 
 .header__link:hover,
 .header__link.active {
-  color: #111827;
-  background: #f3f4f6;
+  color: #172554;
+  background: #fef3c7;
 }
 
 .search-section {
@@ -109,12 +129,16 @@ button:disabled {
 
 .search-input {
   width: 100%;
-  padding: 12px 14px;
-  color: #111827;
-  border: 1px solid #d1d5db;
-  border-radius: 14px;
+  padding: 13px 15px;
+  color: #172554;
+  border: 2px solid #bfdbfe;
+  border-radius: 18px;
   outline: none;
   background: #ffffff;
+}
+
+.search-input::placeholder {
+  color: #93a4bd;
 }
 
 .search-input:focus {
@@ -125,17 +149,27 @@ button:disabled {
 .button,
 .error-button,
 .details-panel__close {
-  padding: 11px 16px;
-  color: #ffffff;
-  border: 1px solid transparent;
-  border-radius: 14px;
-  font-weight: 700;
-  background: #2563eb;
+  padding: 12px 18px;
+  color: #172554;
+  border: 2px solid #172554;
+  border-radius: 16px;
+  font-weight: 900;
+  background: #facc15;
+  box-shadow: 0 5px 0 #172554;
 }
 
 .button:hover,
 .details-panel__close:hover {
-  background: #1d4ed8;
+  transform: translateY(-1px);
+  background: #fde047;
+  box-shadow: 0 6px 0 #172554;
+}
+
+.button:active,
+.details-panel__close:active,
+.error-button:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #172554;
 }
 
 .content {
@@ -158,52 +192,80 @@ button:disabled {
 
 .results-section h2 {
   margin: 0 0 18px;
-  font-size: 24px;
+  color: #172554;
+  font-size: 25px;
+  letter-spacing: -0.03em;
 }
 
 .pokemon-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 14px;
+  gap: 16px;
 }
 
 .pokemon-card {
   display: block;
-  min-height: 132px;
-  padding: 18px;
+  min-height: 250px;
+  padding: 0;
   color: inherit;
-  border: 1px solid #e5e7eb;
-  border-radius: 18px;
+  border: 2px solid #dbeafe;
+  border-radius: 24px;
+  overflow: hidden;
   background: #ffffff;
   text-decoration: none;
 }
 
 .pokemon-card:hover {
-  transform: translateY(-2px);
-  border-color: #bfdbfe;
-  box-shadow: 0 12px 24px rgb(37 99 235 / 10%);
+  transform: translateY(-3px);
+  border-color: #facc15;
+  box-shadow: 0 16px 30px rgb(37 99 235 / 15%);
+}
+
+.pokemon-card__content {
+  display: grid;
+  gap: 12px;
+  height: 100%;
+  padding: 16px;
+}
+
+.pokemon-card__image-wrapper {
+  display: grid;
+  place-items: center;
+  min-height: 118px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle, rgb(250 204 21 / 40%), transparent 58%),
+    linear-gradient(135deg, #eff6ff, #fef9c3);
+}
+
+.pokemon-card__image {
+  width: 112px;
+  height: 112px;
+  object-fit: contain;
 }
 
 .pokemon-card h3 {
-  margin: 0 0 10px;
+  margin: 0 0 8px;
+  color: #1d4ed8;
   font-size: 18px;
   text-transform: capitalize;
 }
 
 .pokemon-card p {
   margin: 0;
-  color: #6b7280;
+  color: #475569;
   line-height: 1.45;
 }
 
 .status-message {
   margin: 0;
-  color: #6b7280;
+  color: #64748b;
 }
 
 .error-message {
   margin: 0;
   color: #dc2626;
+  font-weight: 700;
 }
 
 .pagination {
@@ -215,8 +277,8 @@ button:disabled {
 }
 
 .pagination__page {
-  color: #374151;
-  font-weight: 700;
+  color: #172554;
+  font-weight: 900;
 }
 
 .details-panel,
@@ -230,10 +292,32 @@ button:disabled {
   top: 24px;
 }
 
+.details-panel__close {
+  margin-bottom: 18px;
+}
+
+.details-panel__content {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+}
+
+.details-panel__image {
+  justify-self: center;
+  width: min(240px, 100%);
+  aspect-ratio: 1;
+  object-fit: contain;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle, rgb(250 204 21 / 45%), transparent 60%),
+    linear-gradient(135deg, #eff6ff, #fff7ed);
+}
+
 .details-panel h2,
 .page-card h1,
 .fallback h1 {
-  margin: 0 0 12px;
+  margin: 0;
+  color: #172554;
 }
 
 .details-panel h2 {
@@ -243,27 +327,31 @@ button:disabled {
 .details-panel p,
 .page-card p,
 .fallback p {
-  color: #6b7280;
+  margin: 0;
+  color: #475569;
   line-height: 1.5;
-}
-
-.details-panel__close {
-  margin-bottom: 18px;
 }
 
 .error-button {
   margin-top: 22px;
-  background: #f43f5e;
+  color: #ffffff;
+  background: #ef4444;
 }
 
 .error-button:hover {
-  background: #e11d48;
+  transform: translateY(-1px);
+  background: #dc2626;
+  box-shadow: 0 6px 0 #172554;
 }
 
 .page-card {
   display: grid;
   justify-items: start;
   gap: 14px;
+}
+
+.fallback {
+  border-color: rgb(239 68 68 / 35%);
 }
 
 @media (max-width: 900px) {
