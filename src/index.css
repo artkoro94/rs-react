@@ -155,3 +155,92 @@ button:disabled {
   margin: 0;
   color: #cbd5e1;
 }
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.header__logo {
+  color: inherit;
+  font-size: 28px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.header__nav {
+  display: flex;
+  gap: 12px;
+}
+
+.header__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.header__link.active {
+  text-decoration: underline;
+}
+
+.content {
+  display: grid;
+  gap: 24px;
+}
+
+.content--split {
+  grid-template-columns: minmax(0, 1fr) 360px;
+  align-items: start;
+}
+
+.master-panel {
+  min-width: 0;
+}
+
+.pokemon-card {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.pokemon-card:hover {
+  transform: translateY(-2px);
+}
+
+.pagination {
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination__page {
+  font-weight: 700;
+}
+
+.details-panel,
+.page-card {
+  border: 1px solid #34384a;
+  border-radius: 16px;
+  padding: 24px;
+  background: #171923;
+}
+
+.details-panel {
+  position: sticky;
+  top: 24px;
+}
+
+.details-panel__close {
+  margin-bottom: 16px;
+}
+
+@media (max-width: 900px) {
+  .content--split {
+    grid-template-columns: 1fr;
+  }
+
+  .details-panel {
+    position: static;
+  }
+}
