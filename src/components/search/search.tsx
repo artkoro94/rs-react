@@ -1,66 +1,55 @@
-import React from 'react';
+import { useState } from 'react';
 import { SEARCH_STORAGE_KEY } from '../../shared/constants/storage';
+import { useLocalStorage } from '../../hooks/use-local-storage';
 
 interface SearchProps {
   onSearch: (searchTerm: string) => void;
 }
 
-interface SearchState {
-  searchTerm: string;
-  lastSubmittedSearchTerm: string;
-}
+export const Search = ({ onSearch }: SearchProps) => {
+  const [savedSearchTerm, setSavedSearchTerm] = useLocalStorage<string>(
+    SEARCH_STORAGE_KEY,
+    ''
+  );
+  const [searchTerm, setSearchTerm] = useState(savedSearchTerm);
+  const [lastSubmittedSearchTerm, setLastSubmittedSearchTerm] =
+    useState(savedSearchTerm);
 
-export class Search extends React.Component<SearchProps, SearchState> {
-  state: SearchState = {
-    searchTerm: localStorage.getItem(SEARCH_STORAGE_KEY) ?? '',
-    lastSubmittedSearchTerm: '',
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setSearchTerm(event.target.value);
   };
 
-  componentDidMount(): void {
-    this.props.onSearch(this.state.searchTerm);
-    this.setState({ lastSubmittedSearchTerm: this.state.searchTerm.trim() });
-  }
-
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    this.setState({ searchTerm: event.target.value });
-  };
-
-  handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
 
-    const trimmedSearchTerm = this.state.searchTerm.trim();
+    const trimmedSearchTerm = searchTerm.trim();
 
-    if (trimmedSearchTerm === this.state.lastSubmittedSearchTerm) {
+    if (trimmedSearchTerm === lastSubmittedSearchTerm) {
       return;
     }
 
-    localStorage.setItem(SEARCH_STORAGE_KEY, trimmedSearchTerm);
-
-    this.setState(
-      {
-        searchTerm: trimmedSearchTerm,
-        lastSubmittedSearchTerm: trimmedSearchTerm,
-      },
-      () => this.props.onSearch(trimmedSearchTerm)
-    );
+    setSavedSearchTerm(trimmedSearchTerm);
+    setSearchTerm(trimmedSearchTerm);
+    setLastSubmittedSearchTerm(trimmedSearchTerm);
+    onSearch(trimmedSearchTerm);
   };
 
-  render() {
-    return (
-      <section className="search-section">
-        <form className="search-form" onSubmit={this.handleSubmit}>
-          <input
-            value={this.state.searchTerm}
-            onChange={this.handleChange}
-            placeholder="pikachu"
-            className="search-input"
-          />
+  return (
+    <section className="search-section">
+      <form className="search-form" onSubmit={handleSubmit}>
+        <input
+          value={searchTerm}
+          onChange={handleChange}
+          placeholder="pikachu"
+          className="search-input"
+        />
 
-          <button className="button" type="submit">
-            Search
-          </button>
-        </form>
-      </section>
-    );
-  }
-}
+        <button className="button" type="submit">
+          Search
+        </button>
+      </form>
+    </section>
+  );
+};
