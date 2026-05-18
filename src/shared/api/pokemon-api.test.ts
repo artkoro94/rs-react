@@ -5,6 +5,7 @@ const pikachuDetails = {
   name: 'pikachu',
   height: 4,
   weight: 60,
+  image: '/icons.svg',
   types: [
     {
       type: {
@@ -19,6 +20,7 @@ const bulbasaurDetails = {
   name: 'bulbasaur',
   height: 7,
   weight: 69,
+  image: '/icons.svg',
   types: [
     {
       type: {
@@ -65,6 +67,7 @@ describe('pokemon-api', () => {
         id: 25,
         name: 'pikachu',
         description: 'Types: electric. Height: 4. Weight: 60.',
+        image: '/icons.svg',
       },
     ]);
   });
@@ -118,11 +121,13 @@ describe('pokemon-api', () => {
         id: 25,
         name: 'pikachu',
         description: 'Types: electric. Height: 4. Weight: 60.',
+        image: '/icons.svg',
       },
       {
         id: 1,
         name: 'bulbasaur',
         description: 'Types: grass, poison. Height: 7. Weight: 69.',
+        image: '/icons.svg',
       },
     ]);
   });

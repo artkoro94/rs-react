@@ -19,14 +19,15 @@ interface PokemonDetailsResponse {
   name: string;
   height: number;
   weight: number;
-  sprites: {
-    front_default: string | null;
-    other: {
-      ['official-artwork']: {
-        front_default: string | null;
-      };
+sprites?: {
+  front_default: string | null;
+  other?: {
+    ['official-artwork']?: {
+      front_default: string | null;
     };
   };
+};
+
   types: {
     type: {
       name: string;
@@ -46,8 +47,8 @@ const getPokemonDescription = (pokemon: PokemonDetailsResponse): string => {
 
 const getPokemonImage = (pokemon: PokemonDetailsResponse): string => {
   return (
-    pokemon.sprites.other['official-artwork'].front_default ??
-    pokemon.sprites.front_default ??
+    pokemon.sprites?.other?.['official-artwork']?.front_default ??
+    pokemon.sprites?.front_default ??
     FALLBACK_IMAGE
   );
 };
