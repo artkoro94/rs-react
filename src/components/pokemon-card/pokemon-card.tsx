@@ -18,9 +18,19 @@ export const PokemonCard = ({ pokemon }: PokemonCardProps) => {
       className="pokemon-card"
       to={`/pokemon/${pokemon.id}?${nextSearchParams.toString()}`}
     >
-      <article>
-        <h3>{pokemon.name}</h3>
-        <p>{pokemon.description}</p>
+      <article className="pokemon-card__content">
+        <div className="pokemon-card__image-wrapper">
+          <img
+            className="pokemon-card__image"
+            src={pokemon.image}
+            alt={pokemon.name}
+          />
+        </div>
+
+        <div>
+          <h3>{pokemon.name}</h3>
+          <p>{pokemon.description}</p>
+        </div>
       </article>
     </Link>
   );

@@ -69,7 +69,11 @@ export const PokemonDetails = () => {
 
   return (
     <aside className="details-panel">
-      <button className="details-panel__close" type="button" onClick={closeDetails}>
+      <button
+        className="details-panel__close"
+        type="button"
+        onClick={closeDetails}
+      >
         Close
       </button>
 
@@ -78,10 +82,16 @@ export const PokemonDetails = () => {
       {error && <p className="error-message">{error}</p>}
 
       {!loading && !error && pokemon && (
-        <>
+        <div className="details-panel__content">
+          <img
+            className="details-panel__image"
+            src={pokemon.image}
+            alt={pokemon.name}
+          />
+
           <h2>{pokemon.name}</h2>
           <p>{pokemon.description}</p>
-        </>
+        </div>
       )}
     </aside>
   );

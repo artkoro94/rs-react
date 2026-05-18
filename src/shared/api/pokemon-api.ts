@@ -7,6 +7,7 @@ export interface PokemonCardData {
   id: number;
   name: string;
   description: string;
+  image: string;
 }
 
 interface PokemonListResponse {
@@ -18,6 +19,14 @@ interface PokemonDetailsResponse {
   name: string;
   height: number;
   weight: number;
+  sprites: {
+    front_default: string | null;
+    other: {
+      ['official-artwork']: {
+        front_default: string | null;
+      };
+    };
+  };
   types: {
     type: {
       name: string;
@@ -27,11 +36,31 @@ interface PokemonDetailsResponse {
 
 const BASE_URL = 'https://pokeapi.co/api/v2/pokemon';
 const PAGE_LIMIT = 10;
+const FALLBACK_IMAGE = '/icons.svg';
 
 const getPokemonDescription = (pokemon: PokemonDetailsResponse): string => {
   const types = pokemon.types.map((item) => item.type.name).join(', ');
 
   return `Types: ${types}. Height: ${pokemon.height}. Weight: ${pokemon.weight}.`;
+};
+
+const getPokemonImage = (pokemon: PokemonDetailsResponse): string => {
+  return (
+    pokemon.sprites.other['official-artwork'].front_default ??
+    pokemon.sprites.front_default ??
+    FALLBACK_IMAGE
+  );
+};
+
+const mapPokemonDetails = (
+  pokemon: PokemonDetailsResponse
+): PokemonCardData => {
+  return {
+    id: pokemon.id,
+    name: pokemon.name,
+    description: getPokemonDescription(pokemon),
+    image: getPokemonImage(pokemon),
+  };
 };
 
 const fetchPokemonDetails = async (
@@ -45,11 +74,7 @@ const fetchPokemonDetails = async (
 
   const data = (await response.json()) as PokemonDetailsResponse;
 
-  return {
-    id: data.id,
-    name: data.name,
-    description: getPokemonDescription(data),
-  };
+  return mapPokemonDetails(data);
 };
 
 export const fetchPokemonById = async (
@@ -73,13 +98,7 @@ export const fetchPokemons = async (
 
     const data = (await response.json()) as PokemonDetailsResponse;
 
-    return [
-      {
-        id: data.id,
-        name: data.name,
-        description: getPokemonDescription(data),
-      },
-    ];
+    return [mapPokemonDetails(data)];
   }
 
   const response = await fetch(
