@@ -30,16 +30,6 @@ describe('Search', () => {
     expect(screen.getByPlaceholderText('pikachu')).toHaveValue('pikachu');
   });
 
-  it('calls onSearch with saved search term on mount', () => {
-    const onSearch = vi.fn();
-
-    localStorage.setItem(SEARCH_STORAGE_KEY, 'pikachu');
-
-    render(<Search onSearch={onSearch} />);
-
-    expect(onSearch).toHaveBeenCalledWith('pikachu');
-  });
-
   it('updates input value when user types', async () => {
     const user = userEvent.setup();
 
@@ -99,11 +89,11 @@ describe('Search', () => {
 
     const searchButton = screen.getByRole('button', { name: 'Search' });
 
-    expect(onSearch).toHaveBeenCalledTimes(1);
+    expect(onSearch).not.toHaveBeenCalled();
 
     await user.click(searchButton);
 
-    expect(onSearch).toHaveBeenCalledTimes(1);
+    expect(onSearch).not.toHaveBeenCalled();
   });
 
   it('submits search when user presses Enter', async () => {

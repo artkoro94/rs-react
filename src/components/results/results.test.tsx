@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 
 import { Results } from './results';
 import {
@@ -6,10 +6,11 @@ import {
   pikachuMock,
   pokemonListMock,
 } from '../../shared/test/pokemon-mocks';
+import { renderWithRouter } from '../../shared/test/render-with-router';
 
 describe('Results', () => {
   it('renders section title', () => {
-    render(<Results pokemons={[]} loading={false} error={null} />);
+    renderWithRouter(<Results pokemons={[]} loading={false} error={null} />);
 
     expect(
       screen.getByRole('heading', { name: 'Results' })
@@ -17,7 +18,7 @@ describe('Results', () => {
   });
 
   it('renders loading message while data is loading', () => {
-    render(<Results pokemons={[]} loading={true} error={null} />);
+    renderWithRouter(<Results pokemons={[]} loading={true} error={null} />);
 
     expect(screen.getByText('Loading...')).toBeInTheDocument();
   });
@@ -25,19 +26,19 @@ describe('Results', () => {
   it('renders error message when error exists', () => {
     const errorMessage = 'Failed to load pokemons';
 
-    render(<Results pokemons={[]} loading={false} error={errorMessage} />);
+    renderWithRouter(<Results pokemons={[]} loading={false} error={errorMessage} />);
 
     expect(screen.getByText(errorMessage)).toBeInTheDocument();
   });
 
   it('renders empty message when there are no pokemons', () => {
-    render(<Results pokemons={[]} loading={false} error={null} />);
+    renderWithRouter(<Results pokemons={[]} loading={false} error={null} />);
 
     expect(screen.getByText('No pokemons found.')).toBeInTheDocument();
   });
 
   it('renders pokemon list when data exists', () => {
-    render(<Results pokemons={pokemonListMock} loading={false} error={null} />);
+    renderWithRouter(<Results pokemons={pokemonListMock} loading={false} error={null} />);
 
     expect(
       screen.getByRole('heading', { name: pikachuMock.name })
@@ -53,7 +54,7 @@ describe('Results', () => {
   });
 
   it('does not render pokemon list while loading', () => {
-    render(<Results pokemons={pokemonListMock} loading={true} error={null} />);
+    renderWithRouter(<Results pokemons={pokemonListMock} loading={true} error={null} />);
 
     expect(screen.getByText('Loading...')).toBeInTheDocument();
 
@@ -63,7 +64,7 @@ describe('Results', () => {
   });
 
   it('does not render empty message when error exists', () => {
-    render(<Results pokemons={[]} loading={false} error="Server error" />);
+    renderWithRouter(<Results pokemons={[]} loading={false} error="Server error" />);
 
     expect(screen.getByText('Server error')).toBeInTheDocument();
     expect(screen.queryByText('No pokemons found.')).not.toBeInTheDocument();
