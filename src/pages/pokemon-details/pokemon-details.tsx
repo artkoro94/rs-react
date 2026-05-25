@@ -3,7 +3,7 @@ import { useNavigate, useParams, useSearchParams } from 'react-router';
 import {
   fetchPokemonById,
   type PokemonCardData,
-} from '../shared/api/pokemon-api';
+} from '../../shared/api/pokemon-api';
 
 export const PokemonDetails = () => {
   const { pokemonId } = useParams();
