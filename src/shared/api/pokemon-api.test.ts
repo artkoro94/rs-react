@@ -68,6 +68,7 @@ describe('pokemon-api', () => {
         name: 'pikachu',
         description: 'Types: electric. Height: 4. Weight: 60.',
         image: '/icons.svg',
+        types: ['electric'],
       },
     ]);
   });
@@ -88,10 +89,12 @@ describe('pokemon-api', () => {
             {
               name: 'pikachu',
               url: 'https://pokeapi.co/api/v2/pokemon/25/',
+              types: ['electric'],
             },
             {
               name: 'bulbasaur',
               url: 'https://pokeapi.co/api/v2/pokemon/1/',
+              types: ['grass', 'poison'],
             },
           ],
         })
@@ -122,12 +125,14 @@ describe('pokemon-api', () => {
         name: 'pikachu',
         description: 'Types: electric. Height: 4. Weight: 60.',
         image: '/icons.svg',
+        types: ['electric'],
       },
       {
         id: 1,
         name: 'bulbasaur',
         description: 'Types: grass, poison. Height: 7. Weight: 69.',
         image: '/icons.svg',
+        types: ['grass', 'poison'],
       },
     ]);
   });

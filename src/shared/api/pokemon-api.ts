@@ -8,6 +8,7 @@ export interface PokemonCardData {
   name: string;
   description: string;
   image: string;
+  types: string[];
 }
 
 interface PokemonListResponse {
@@ -61,6 +62,7 @@ const mapPokemonDetails = (
     name: pokemon.name,
     description: getPokemonDescription(pokemon),
     image: getPokemonImage(pokemon),
+    types: pokemon.types.map((item) => item.type.name),
   };
 };
 

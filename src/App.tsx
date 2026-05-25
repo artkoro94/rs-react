@@ -18,6 +18,8 @@ import { PokemonDetails } from './pages/pokemon-details/pokemon-details';
 import { fetchPokemons, type PokemonCardData } from './shared/api/pokemon-api';
 import { SEARCH_STORAGE_KEY } from './shared/constants/storage';
 import { useLocalStorage } from './hooks/use-local-storage';
+import { SelectedPokemonsFlyout } from './components/selected-pokemons-flyout/selected-pokemons-flyout';
+import { ThemeSwitcher } from './components/theme-switcher/theme-switcher';
 
 const PAGE_OFFSET_STEP = 10;
 const PAGE_QUERY_KEY = 'page';
@@ -145,7 +147,7 @@ const HomePage = () => {
     <ErrorBoundary>
       <main className="app">
         <Header />
-
+        <ThemeSwitcher />
         <Search onSearch={handleSearch} />
 
         <div className={hasDetails ? 'content content--split' : 'content'}>
@@ -179,6 +181,7 @@ const HomePage = () => {
 
           <Outlet />
         </div>
+        <SelectedPokemonsFlyout />
 
         <ErrorButton />
       </main>

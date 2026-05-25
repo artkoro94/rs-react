@@ -9,6 +9,7 @@ const pokemonMock = {
   name: 'pikachu',
   description: 'Electric pokemon',
   image: '/pikachu.png',
+  types: ['electric'],
 };
 
 describe('PokemonCard', () => {
