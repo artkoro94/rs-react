@@ -1,16 +1,10 @@
 import { create } from 'zustand';
-
-export interface SelectedPokemon {
-  id: number;
-  name: string;
-  image: string;
-  types: string[];
-}
+import type { Pokemon } from '../types/pokemon';
 
 interface SelectedPokemonStore {
-  selectedPokemons: SelectedPokemon[];
+  selectedPokemons: Pokemon[];
 
-  togglePokemon: (pokemon: SelectedPokemon) => void;
+  togglePokemon: (pokemon: Pokemon) => void;
 
   clearSelectedPokemons: () => void;
 

@@ -34,6 +34,7 @@ const pokemonMock: PokemonCardData = {
   name: 'pikachu',
   description: 'Electric pokemon',
   image: '/pikachu.png',
+  types: []
 };
 
 describe('PokemonDetails', () => {
