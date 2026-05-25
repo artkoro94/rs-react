@@ -1,10 +1,10 @@
 import { create } from 'zustand';
-import type { Pokemon } from '../types/pokemon';
+import type { PokemonCardData } from '../shared/api/pokemon-api';
 
 interface SelectedPokemonStore {
-  selectedPokemons: Pokemon[];
+  selectedPokemons: PokemonCardData[];
 
-  togglePokemon: (pokemon: Pokemon) => void;
+  togglePokemon: (pokemon: PokemonCardData) => void;
 
   clearSelectedPokemons: () => void;
 

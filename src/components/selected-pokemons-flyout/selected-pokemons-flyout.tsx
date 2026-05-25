@@ -1,4 +1,5 @@
 import { useSelectedPokemonStore } from '../../store/selected-pokemon-store';
+import { downloadSelectedPokemonsCsv } from '../../utils/download-selected-pokemons-csv';
 
 export const SelectedPokemonsFlyout = () => {
   const selectedPokemons = useSelectedPokemonStore(
@@ -29,9 +30,14 @@ export const SelectedPokemonsFlyout = () => {
           Unselect all
         </button>
 
-        <button type="button">
-          Download
-        </button>
+<button
+  type="button"
+  onClick={() =>
+    downloadSelectedPokemonsCsv(selectedPokemons)
+  }
+>
+  Download
+</button>
       </div>
     </aside>
   );
