@@ -7,9 +7,9 @@ import { PokemonDetails } from './pokemon-details';
 
 const navigateMock = vi.fn();
 
-vi.mock('react-router', async () => {
-  const actual = await vi.importActual<typeof import('react-router')>(
-    'react-router'
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual<typeof import('react-router-dom')>(
+    'react-router-dom'
   );
 
   return {

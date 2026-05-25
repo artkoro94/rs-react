@@ -6,7 +6,7 @@ import {
   useMatch,
   useNavigate,
   useSearchParams,
-} from 'react-router';
+} from 'react-router-dom';
 import { ErrorBoundary } from './components/error-boundary/error-boundary';
 import { ErrorButton } from './components/error-button/error-button';
 import { Header } from './components/header';
