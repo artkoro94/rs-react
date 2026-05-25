@@ -450,3 +450,43 @@ a {
     grid-template-columns: 1fr;
   }
 }
+
+.selected-pokemons-flyout {
+  position: sticky;
+  bottom: 0;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 16px;
+
+  padding: 16px 24px;
+
+  background-color: #1f2937;
+  color: white;
+
+  border-top: 1px solid #374151;
+
+  z-index: 100;
+}
+
+.selected-pokemons-flyout__actions {
+  display: flex;
+  gap: 12px;
+}
+
+.selected-pokemons-flyout button {
+  cursor: pointer;
+
+  border: none;
+  border-radius: 8px;
+
+  padding: 10px 16px;
+
+  font-size: 14px;
+}
+
+.selected-pokemons-flyout button:hover {
+  opacity: 0.9;
+}

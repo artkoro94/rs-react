@@ -18,6 +18,7 @@ import { PokemonDetails } from './pages/pokemon-details/pokemon-details';
 import { fetchPokemons, type PokemonCardData } from './shared/api/pokemon-api';
 import { SEARCH_STORAGE_KEY } from './shared/constants/storage';
 import { useLocalStorage } from './hooks/use-local-storage';
+import { SelectedPokemonsFlyout } from './components/selected-pokemons-flyout/selected-pokemons-flyout';
 
 const PAGE_OFFSET_STEP = 10;
 const PAGE_QUERY_KEY = 'page';
@@ -179,7 +180,8 @@ const HomePage = () => {
 
           <Outlet />
         </div>
-
+        <SelectedPokemonsFlyout />
+        
         <ErrorButton />
       </main>
     </ErrorBoundary>
