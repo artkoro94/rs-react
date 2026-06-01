@@ -40,6 +40,7 @@ export const Search = ({ onSearch }: SearchProps) => {
     <section className="search-section">
       <form className="search-form" onSubmit={handleSubmit}>
         <input
+          name="pokemon-search"
           value={searchTerm}
           onChange={handleChange}
           placeholder="pikachu"

@@ -4,13 +4,17 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 import './index.css';
 import { ThemeProvider } from './context/theme-context/theme-context.tsx';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from './shared/api/query-client';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
       <BrowserRouter basename="/rs-react">
         <App />
     </BrowserRouter>
+    </QueryClientProvider>
     </ThemeProvider>
   </React.StrictMode>
 );
