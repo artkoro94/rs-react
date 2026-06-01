@@ -24,11 +24,11 @@ describe('Results', () => {
   });
 
   it('renders error message when error exists', () => {
-    const errorMessage = 'Failed to load pokemons';
+    const errorMessage = new Error('Failed to load pokemons');
 
     renderWithRouter(<Results pokemons={[]} loading={false} error={errorMessage} />);
 
-    expect(screen.getByText(errorMessage)).toBeInTheDocument();
+    expect(screen.getByText('Could not load pokemons. Try another name.')).toBeInTheDocument();
   });
 
   it('renders empty message when there are no pokemons', () => {
@@ -63,10 +63,21 @@ describe('Results', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('does not render empty message when error exists', () => {
-    renderWithRouter(<Results pokemons={[]} loading={false} error="Server error" />);
+it('does not render empty message when error exists', () => {
+  renderWithRouter(
+    <Results
+      pokemons={[]}
+      loading={false}
+      error={new Error('Server error')}
+    />
+  );
 
-    expect(screen.getByText('Server error')).toBeInTheDocument();
-    expect(screen.queryByText('No pokemons found.')).not.toBeInTheDocument();
-  });
+  expect(
+    screen.getByText('Could not load pokemons. Try another name.')
+  ).toBeInTheDocument();
+
+  expect(
+    screen.queryByText('No pokemons found.')
+  ).not.toBeInTheDocument();
 });
+  });

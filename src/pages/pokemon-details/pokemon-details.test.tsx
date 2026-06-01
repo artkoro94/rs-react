@@ -2,8 +2,21 @@ import { MemoryRouter, Route, Routes } from 'react-router';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
 
 import { PokemonDetails } from './pokemon-details';
+
+const createTestQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
 
 const navigateMock = vi.fn();
 
@@ -42,15 +55,22 @@ describe('PokemonDetails', () => {
     vi.clearAllMocks();
   });
 
-  const renderComponent = () => {
-    render(
+const renderComponent = () => {
+  const queryClient = createTestQueryClient();
+
+  render(
+    <QueryClientProvider client={queryClient}>
       <MemoryRouter initialEntries={['/pokemon/25?page=1']}>
         <Routes>
-          <Route path="/pokemon/:pokemonId" element={<PokemonDetails />} />
+          <Route
+            path="/pokemon/:pokemonId"
+            element={<PokemonDetails />}
+          />
         </Routes>
       </MemoryRouter>
-    );
-  };
+    </QueryClientProvider>
+  );
+};
 
   it('renders loading state', () => {
     mockedFetchPokemonById.mockImplementation(
@@ -104,17 +124,24 @@ describe('PokemonDetails', () => {
     });
   });
 
-  it('renders not found message for invalid pokemon id', async () => {
-    render(
+it('renders not found message for invalid pokemon id', async () => {
+  const queryClient = createTestQueryClient();
+
+  render(
+    <QueryClientProvider client={queryClient}>
       <MemoryRouter initialEntries={['/pokemon/test']}>
         <Routes>
-          <Route path="/pokemon/:pokemonId" element={<PokemonDetails />} />
+          <Route
+            path="/pokemon/:pokemonId"
+            element={<PokemonDetails />}
+          />
         </Routes>
       </MemoryRouter>
-    );
+    </QueryClientProvider>
+  );
 
-    expect(
-      await screen.findByText(/pokemon was not found/i)
-    ).toBeInTheDocument();
-  });
+  expect(
+    await screen.findByText(/pokemon was not found/i)
+  ).toBeInTheDocument();
+});
 });
