@@ -20,6 +20,7 @@ import { useLocalStorage } from './hooks/use-local-storage';
 import { SelectedPokemonsFlyout } from './components/selected-pokemons-flyout/selected-pokemons-flyout';
 import { ThemeSwitcher } from './components/theme-switcher/theme-switcher';
 import { usePokemonsQuery } from './hooks/use-pokemons-query';
+import { RefreshButton } from './components/refresh-button/refresh-button';
 
 const PAGE_OFFSET_STEP = 10;
 const PAGE_QUERY_KEY = 'page';
@@ -119,6 +120,7 @@ const HomePage = () => {
         <Header />
         <ThemeSwitcher />
         <Search onSearch={handleSearch} />
+        <RefreshButton />
 
         <div className={hasDetails ? 'content content--split' : 'content'}>
           <div className="master-panel" onClick={handleMasterPanelClick}>
