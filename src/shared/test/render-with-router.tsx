@@ -15,9 +15,9 @@ const createTestQueryClient = () =>
 
 export const renderWithRouter = (
   component: ReactElement,
-  initialEntries: string[] = ['/?page=1']
+  initialEntries: string[] = ['/?page=1'],
+  queryClient = createTestQueryClient()
 ) => {
-const queryClient = createTestQueryClient();
 
 return render(
   <QueryClientProvider client={queryClient}>
