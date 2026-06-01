@@ -4,7 +4,7 @@ import { PokemonList } from '../pokemon-list/pokemon-list';
 interface ResultsProps {
   pokemons: PokemonCardData[];
   loading: boolean;
-  error: string | null;
+  error: Error | null;
 }
 
 export const Results = ({ pokemons, loading, error }: ResultsProps) => {
@@ -14,7 +14,7 @@ export const Results = ({ pokemons, loading, error }: ResultsProps) => {
 
       {loading && <p className="status-message">Loading...</p>}
 
-      {error && <p className="error-message">{error}</p>}
+      {error && ( <p className="error-message">Could not load pokemons. Try another name.</p>)}
 
       {!loading && !error && pokemons.length === 0 && (
         <p className="status-message">No pokemons found.</p>

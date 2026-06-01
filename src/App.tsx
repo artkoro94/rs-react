@@ -15,11 +15,11 @@ import { Search } from './components/search/search';
 import { AboutPage } from './pages/about-page/about-page';
 import { NotFoundPage } from './pages/not-found-page/not-found-page';
 import { PokemonDetails } from './pages/pokemon-details/pokemon-details';
-import { fetchPokemons, type PokemonCardData } from './shared/api/pokemon-api';
 import { SEARCH_STORAGE_KEY } from './shared/constants/storage';
 import { useLocalStorage } from './hooks/use-local-storage';
 import { SelectedPokemonsFlyout } from './components/selected-pokemons-flyout/selected-pokemons-flyout';
 import { ThemeSwitcher } from './components/theme-switcher/theme-switcher';
+import { usePokemonsQuery } from './hooks/use-pokemons-query';
 
 const PAGE_OFFSET_STEP = 10;
 const PAGE_QUERY_KEY = 'page';
@@ -36,9 +36,6 @@ const getPageFromSearchParams = (searchParams: URLSearchParams): number => {
 
 const HomePage = () => {
   const [savedSearchTerm] = useLocalStorage<string>(SEARCH_STORAGE_KEY, '');
-  const [pokemons, setPokemons] = useState<PokemonCardData[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState(savedSearchTerm);
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -47,6 +44,11 @@ const HomePage = () => {
 
   const page = getPageFromSearchParams(searchParams);
   const offset = (page - 1) * PAGE_OFFSET_STEP;
+  const {
+  data: pokemons = [],
+  isLoading,
+  error,
+} = usePokemonsQuery(searchTerm, offset);
   const hasDetails = Boolean(detailsMatch);
 
   useEffect(() => {
@@ -59,38 +61,6 @@ const HomePage = () => {
       setSearchParams(nextSearchParams, { replace: true });
     }
   }, [page, searchParams, setSearchParams]);
-
-  useEffect(() => {
-    let ignore = false;
-
-    const loadPokemons = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const loadedPokemons = await fetchPokemons(searchTerm, offset);
-
-        if (!ignore) {
-          setPokemons(loadedPokemons);
-        }
-      } catch {
-        if (!ignore) {
-          setPokemons([]);
-          setError('Could not load pokemons. Try another name.');
-        }
-      } finally {
-        if (!ignore) {
-          setLoading(false);
-        }
-      }
-    };
-
-    loadPokemons();
-
-    return () => {
-      ignore = true;
-    };
-  }, [offset, searchTerm]);
 
   const updatePage = useCallback(
     (nextPage: number) => {
@@ -152,9 +122,9 @@ const HomePage = () => {
 
         <div className={hasDetails ? 'content content--split' : 'content'}>
           <div className="master-panel" onClick={handleMasterPanelClick}>
-            <Results pokemons={pokemons} loading={loading} error={error} />
+            <Results pokemons={pokemons} loading={isLoading} error={error} />
 
-            {!loading && !error && pokemons.length > 0 && (
+            {!isLoading && !error && pokemons.length > 0 && (
               <div className="pagination">
                 <button
                   className="button"
