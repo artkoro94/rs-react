@@ -1,18 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import {
-  fetchPokemonById,
-  type PokemonCardData,
-} from '../../shared/api/pokemon-api';
+import { usePokemonDetailsQuery } from '../../hooks/use-pokemon-details-query';
 
 export const PokemonDetails = () => {
   const { pokemonId } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-
-  const [pokemon, setPokemon] = useState<PokemonCardData | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const closeDetails = () => {
     const nextSearchParams = new URLSearchParams(searchParams);
@@ -27,53 +20,33 @@ export const PokemonDetails = () => {
     });
   };
 
-  useEffect(() => {
-    let ignore = false;
+  const parsedPokemonId = useMemo(() => {
+  const value = Number(pokemonId);
 
-    const loadPokemonDetails = async () => {
-      const parsedPokemonId = Number(pokemonId);
+  return Number.isInteger(value) ? value : null;
+}, [pokemonId]);
 
-      if (!Number.isInteger(parsedPokemonId)) {
-        setPokemon(null);
-        setError('Pokemon was not found.');
-        return;
-      }
+const {
+  data: pokemon,
+  isLoading,
+  error,
+} = usePokemonDetailsQuery(parsedPokemonId);
 
-      setLoading(true);
-      setError(null);
-
-      try {
-        const loadedPokemon = await fetchPokemonById(parsedPokemonId);
-
-        if (!ignore) {
-          setPokemon(loadedPokemon);
-        }
-      } catch {
-        if (!ignore) {
-          setPokemon(null);
-          setError('Could not load pokemon details.');
-        }
-      } finally {
-        if (!ignore) {
-          setLoading(false);
-        }
-      }
-    };
-
-    loadPokemonDetails();
-
-    return () => {
-      ignore = true;
-    };
-  }, [pokemonId]);
+if (parsedPokemonId === null) {
+  return (
+    <aside className="details-panel">
+      <p className="error-message">Pokemon was not found.</p>
+    </aside>
+  );
+}
 
   return (
 <aside className="details-panel">
-  {loading && <p className="status-message">Loading details...</p>}
+  {isLoading && <p className="status-message">Loading details...</p>}
 
-  {error && <p className="error-message">{error}</p>}
+  {error && <p className="error-message">Could not load pokemon details.</p>}
 
-  {!loading && !error && pokemon && (
+  {!isLoading && !error && pokemon && (
     <>
       <div className="details-panel__content">
         <img
