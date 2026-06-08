@@ -25,7 +25,7 @@ export const formSchema = z.object({
     ),
 confirmPassword: z.string(),
 
-  image: z.any().optional(),
+  image: z.instanceof(File).optional(),
 
 termsAccepted: z.boolean().refine((value) => value, {
   message: 'Terms must be accepted',
