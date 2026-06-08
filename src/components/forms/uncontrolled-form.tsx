@@ -3,10 +3,16 @@ import { COUNTRIES } from '../../constants/countries';
 import { PasswordStrength } from './password-strength';
 import { fileToBase64 } from '../../utils/file-to-base64';
 import { validateImage } from '../../utils/image-validation';
+import { useFormStore } from '../../store/form-store';
+import type { FormData } from '../../types/form-data';
 
 export const UncontrolledForm = () => {
   const [imagePreview, setImagePreview] = useState('');
   const [password, setPassword] = useState('');
+
+  const addSubmission = useFormStore(
+  (state) => state.addSubmission
+);
 
   const handleImageChange = async (
   event: React.ChangeEvent<HTMLInputElement>
@@ -29,9 +35,31 @@ export const UncontrolledForm = () => {
 };
 
   return (
-    <form
+<form
   onSubmit={(event) => {
     event.preventDefault();
+
+    const formData = new FormData(
+      event.currentTarget
+    );
+
+    const submission: FormData = {
+      id: crypto.randomUUID(),
+      createdAt: Date.now(),
+
+      name: String(formData.get('name')),
+      age: Number(formData.get('age')),
+      email: String(formData.get('email')),
+      gender: String(formData.get('gender')),
+      country: String(formData.get('country')),
+      password: String(formData.get('password')),
+      image: imagePreview,
+      termsAccepted: Boolean(
+        formData.get('termsAccepted')
+      ),
+    };
+
+    addSubmission(submission);
   }}
 >
       <div>
