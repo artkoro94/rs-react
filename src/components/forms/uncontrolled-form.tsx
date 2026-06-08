@@ -5,10 +5,15 @@ import { fileToBase64 } from '../../utils/file-to-base64';
 import { validateImage } from '../../utils/image-validation';
 import { useFormStore } from '../../store/form-store';
 import type { FormData } from '../../types/form-data';
+import { formSchema } from '../../schemas/form-schema';
 
 export const UncontrolledForm = () => {
   const [imagePreview, setImagePreview] = useState('');
   const [password, setPassword] = useState('');
+
+  const [errors, setErrors] = useState<
+  Record<string, string>
+>({});
 
   const addSubmission = useFormStore(
   (state) => state.addSubmission
@@ -43,6 +48,37 @@ export const UncontrolledForm = () => {
       event.currentTarget
     );
 
+    const validationResult = formSchema.safeParse({
+  name: String(formData.get('name')),
+  age: Number(formData.get('age')),
+  email: String(formData.get('email')),
+  gender: String(formData.get('gender')),
+  country: String(formData.get('country')),
+  password: String(formData.get('password')),
+  image: imagePreview,
+  termsAccepted: Boolean(
+    formData.get('termsAccepted')
+  ),
+});
+
+if (!validationResult.success) {
+  const fieldErrors: Record<string, string> = {};
+
+  validationResult.error.issues.forEach(
+    (issue) => {
+      const field = issue.path[0];
+
+      if (typeof field === 'string') {
+        fieldErrors[field] = issue.message;
+      }
+    }
+  );
+
+  setErrors(fieldErrors);
+
+  return;
+}
+
     const submission: FormData = {
       id: crypto.randomUUID(),
       createdAt: Date.now(),
@@ -59,12 +95,18 @@ export const UncontrolledForm = () => {
       ),
     };
 
+    setErrors({});
+
     addSubmission(submission);
   }}
 >
       <div>
         <label htmlFor="name">Name</label>
         <input id="name" name="name" />
+
+        {errors.name && (
+  <p>{errors.name}</p>
+)}
       </div>
 
       <div>
@@ -74,6 +116,10 @@ export const UncontrolledForm = () => {
           name="age"
           type="number"
         />
+
+        {errors.age && (
+  <p>{errors.age}</p>
+)}
       </div>
 
       <div>
@@ -83,6 +129,10 @@ export const UncontrolledForm = () => {
           name="email"
           type="email"
         />
+
+        {errors.email && (
+  <p>{errors.email}</p>
+)}
       </div>
 
       <div>
@@ -96,6 +146,10 @@ export const UncontrolledForm = () => {
           <option value="male">Male</option>
           <option value="female">Female</option>
         </select>
+
+        {errors.gender && (
+  <p>{errors.gender}</p>
+)}
       </div>
 
       <div>
@@ -116,6 +170,10 @@ export const UncontrolledForm = () => {
     </option>
   ))}
 </select>
+
+{errors.country && (
+  <p>{errors.country}</p>
+)}
       </div>
 
       <div>
@@ -129,6 +187,10 @@ export const UncontrolledForm = () => {
         />
 
         <PasswordStrength password={password} />
+
+        {errors.password && (
+  <p>{errors.password}</p>
+)}
       </div>
 
       <div>
@@ -171,6 +233,10 @@ export const UncontrolledForm = () => {
           />
           Accept Terms
         </label>
+
+        {errors.termsAccepted && (
+  <p>{errors.termsAccepted}</p>
+)}
       </div>
 
       <button type="submit">
