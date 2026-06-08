@@ -155,21 +155,20 @@ if (!validationResult.success) {
       <div>
         <label htmlFor="country">Country</label>
 
-<select
+<input
   id="country"
   name="country"
->
-  <option value="">Select country</option>
+  list="countries"
+/>
 
+<datalist id="countries">
   {COUNTRIES.map((country) => (
     <option
       key={country}
       value={country}
-    >
-      {country}
-    </option>
+    />
   ))}
-</select>
+</datalist>
 
 {errors.country && (
   <p>{errors.country}</p>

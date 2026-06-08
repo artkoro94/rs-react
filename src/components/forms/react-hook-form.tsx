@@ -162,27 +162,24 @@ const password = useWatch({
 <div>
   <label htmlFor="country">Country</label>
 
-  <select
+  <input
     id="country"
+    list="countries"
     {...register('country')}
-  >
-    <option value="">
-      Select country
-    </option>
+  />
 
+  <datalist id="countries">
     {COUNTRIES.map((country) => (
       <option
         key={country}
         value={country}
-      >
-        {country}
-      </option>
+      />
     ))}
-  </select>
+  </datalist>
 
   {errors.country && (
-  <p>{String(errors.country.message)}</p>
-)}
+    <p>{String(errors.country.message)}</p>
+  )}
 </div>
 
 <div>
