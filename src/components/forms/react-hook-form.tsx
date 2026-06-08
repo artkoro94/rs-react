@@ -7,14 +7,18 @@ import { useFormStore } from '../../store/form-store';
 import type { FormData } from '../../types/form-data';
 import { createSubmissionMeta } from '../../utils/create-submission-meta';
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.input<typeof formSchema>;
 
 export const ReactHookForm = () => {
 const {
   register,
   handleSubmit,
   formState: { errors },
-} = useForm({
+} = useForm<
+  z.input<typeof formSchema>,
+  unknown,
+  z.output<typeof formSchema>
+>({
   resolver: zodResolver(formSchema),
 });
 
@@ -45,15 +49,7 @@ const submission: FormData = {
 };
 
   return (
-<form
-  onSubmit={handleSubmit(
-    onSubmit,
-    (errors) => {
-      console.log('VALIDATION ERRORS');
-      console.log(errors);
-    }
-  )}
->
+<form onSubmit={handleSubmit(onSubmit)}>
   <div>
     <label htmlFor="name">Name</label>
 
@@ -160,6 +156,24 @@ const submission: FormData = {
   {errors.password && (
   <p>{String(errors.password.message)}</p>
 )}
+</div>
+
+<div>
+  <label htmlFor="confirmPassword">
+    Confirm Password
+  </label>
+
+  <input
+    id="confirmPassword"
+    type="password"
+    {...register('confirmPassword')}
+  />
+
+  {errors.confirmPassword && (
+    <p>
+      {String(errors.confirmPassword.message)}
+    </p>
+  )}
 </div>
 
 <div>

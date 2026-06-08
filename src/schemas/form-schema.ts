@@ -23,10 +23,18 @@ export const formSchema = z.object({
       PASSWORD_REGEX,
       'Password must contain uppercase, lowercase and number'
     ),
+confirmPassword: z.string(),
 
   image: z.any().optional(),
 
 termsAccepted: z.boolean().refine((value) => value, {
   message: 'Terms must be accepted',
 }),
-});
+})
+  .refine(
+    (data) => data.password === data.confirmPassword,
+    {
+      message: 'Passwords do not match',
+      path: ['confirmPassword'],
+    }
+  );
