@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import { Modal } from './components/modal/modal';
 import { UncontrolledForm } from './components/forms/uncontrolled-form';
+import { useFormStore } from './store/form-store';
 
 function App() {
   const [isUncontrolledOpen, setIsUncontrolledOpen] =
@@ -9,6 +10,10 @@ function App() {
 
   const [isHookFormOpen, setIsHookFormOpen] =
     useState(false);
+
+    const submissions = useFormStore(
+  (state) => state.submissions
+);
 
   return (
     <main className="app">
@@ -32,11 +37,23 @@ function App() {
         </div>
       </section>
 
-      <section className="results">
-        <h2>Submissions</h2>
+<section className="results">
+  <h2>Submissions</h2>
 
-        <p>No submissions yet</p>
-      </section>
+  {submissions.length === 0 ? (
+    <p>No submissions yet</p>
+  ) : (
+    <ul>
+      {submissions.map((submission) => (
+        <li key={submission.id}>
+          <strong>{submission.name}</strong>
+          {' — '}
+          {submission.email}
+        </li>
+      ))}
+    </ul>
+  )}
+</section>
 
       <Modal
         title="Uncontrolled Form"
