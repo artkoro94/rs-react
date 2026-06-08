@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { COUNTRIES } from '../../constants/countries';
+import { PasswordStrength } from './password-strength';
 
 export const UncontrolledForm = () => {
   const [imagePreview] = useState('');
+  const [password, setPassword] = useState('');
 
   return (
     <form
@@ -73,7 +75,10 @@ export const UncontrolledForm = () => {
           id="password"
           name="password"
           type="password"
+          onChange={(event) => setPassword(event.target.value)}
         />
+
+        <PasswordStrength password={password} />
       </div>
 
       <div>
