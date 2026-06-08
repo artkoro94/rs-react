@@ -7,26 +7,48 @@ import { useFormStore } from '../../store/form-store';
 import type { FormData } from '../../types/form-data';
 import { createSubmissionMeta } from '../../utils/create-submission-meta';
 import { PasswordStrength } from './password-strength';
+import { useState } from 'react';
+import { fileToBase64 } from '../../utils/file-to-base64';
+import { validateImage } from '../../utils/image-validation';
+import { useWatch } from 'react-hook-form';
 
 type FormValues = z.input<typeof formSchema>;
 
 export const ReactHookForm = () => {
+  const [imagePreview, setImagePreview] =
+  useState('');
 const {
   register,
   handleSubmit,
-  watch,
+  control,
   formState: { errors },
-} = useForm<
-  z.input<typeof formSchema>,
-  unknown,
-  z.output<typeof formSchema>
->({
+} = useForm<FormValues>({
   resolver: zodResolver(formSchema),
 });
 
 const addSubmission = useFormStore(
   (state) => state.addSubmission
 );
+
+const handleImageChange = async (
+  event: React.ChangeEvent<HTMLInputElement>
+) => {
+  const file = event.target.files?.[0];
+
+  if (!file) {
+    return;
+  }
+
+  const isValid = validateImage(file);
+
+  if (!isValid) {
+    return;
+  }
+
+  const base64 = await fileToBase64(file);
+
+  setImagePreview(base64);
+};
 
 const onSubmit = (data: FormValues) => {
 
@@ -43,14 +65,18 @@ const submission: FormData = {
     country: data.country,
     password: data.password,
 
-    image: '',
+    image: imagePreview,
     termsAccepted: data.termsAccepted,
   };
 
   addSubmission(submission);
 };
 
-const password = watch('password', '');
+const password = useWatch({
+  control,
+  name: 'password',
+  defaultValue: '',
+});
 
   return (
 <form onSubmit={handleSubmit(onSubmit)}>
@@ -157,10 +183,10 @@ const password = watch('password', '');
     {...register('password')}
   />
 
+<PasswordStrength password={password} />
   {errors.password && (
   <p>{String(errors.password.message)}</p>
 )}
-<PasswordStrength password={password} />
 </div>
 
 <div>
@@ -178,6 +204,27 @@ const password = watch('password', '');
     <p>
       {String(errors.confirmPassword.message)}
     </p>
+  )}
+</div>
+
+<div>
+  <label htmlFor="image">
+    Image
+  </label>
+
+  <input
+    id="image"
+    type="file"
+    accept="image/*"
+    onChange={handleImageChange}
+  />
+
+  {imagePreview && (
+    <img
+      src={imagePreview}
+      alt="Preview"
+      width={150}
+    />
   )}
 </div>
 
