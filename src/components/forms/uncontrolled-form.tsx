@@ -1,10 +1,32 @@
 import { useState } from 'react';
 import { COUNTRIES } from '../../constants/countries';
 import { PasswordStrength } from './password-strength';
+import { fileToBase64 } from '../../utils/file-to-base64';
+import { validateImage } from '../../utils/image-validation';
 
 export const UncontrolledForm = () => {
-  const [imagePreview] = useState('');
+  const [imagePreview, setImagePreview] = useState('');
   const [password, setPassword] = useState('');
+
+  const handleImageChange = async (
+  event: React.ChangeEvent<HTMLInputElement>
+) => {
+  const file = event.target.files?.[0];
+
+  if (!file) {
+    return;
+  }
+
+  const isValid = validateImage(file);
+
+  if (!isValid) {
+    return;
+  }
+
+  const base64 = await fileToBase64(file);
+
+  setImagePreview(base64);
+};
 
   return (
     <form
@@ -101,6 +123,7 @@ export const UncontrolledForm = () => {
           name="image"
           type="file"
           accept="image/*"
+          onChange={handleImageChange}
         />
 
         {imagePreview && (

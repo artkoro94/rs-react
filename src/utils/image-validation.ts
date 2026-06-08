@@ -5,3 +5,11 @@ export const ALLOWED_IMAGE_TYPES = [
   'image/png',
   'image/webp',
 ];
+
+export const validateImage = (file: File): boolean => {
+  const isValidSize = file.size <= MAX_IMAGE_SIZE;
+
+  const isValidType = ALLOWED_IMAGE_TYPES.includes(file.type);
+
+  return isValidSize && isValidType;
+};
