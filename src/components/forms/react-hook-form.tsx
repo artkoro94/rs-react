@@ -21,9 +21,10 @@ const {
   register,
   handleSubmit,
   control,
-  formState: { errors },
+  formState: { errors, isValid },
 } = useForm<FormValues>({
   resolver: zodResolver(formSchema),
+  mode: 'onChange',
 });
 
 const addSubmission = useFormStore(
@@ -242,9 +243,12 @@ const password = useWatch({
 )}
 </div>
 
-  <button type="submit">
-    Submit
-  </button>
+<button
+  type="submit"
+  disabled={!isValid}
+>
+  Submit
+</button>
 </form>
   );
 };
