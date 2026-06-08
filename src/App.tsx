@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import { Modal } from './components/modal/modal';
 import { UncontrolledForm } from './components/forms/uncontrolled-form';
+import { ReactHookForm } from './components/forms/react-hook-form';
 import { useFormStore } from './store/form-store';
 
 function App() {
@@ -68,7 +69,7 @@ function App() {
         isOpen={isHookFormOpen}
         onClose={() => setIsHookFormOpen(false)}
       >
-        <UncontrolledForm />
+        <ReactHookForm />
       </Modal>
     </main>
   );
