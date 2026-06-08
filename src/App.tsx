@@ -46,11 +46,23 @@ function App() {
   ) : (
     <ul>
       {submissions.map((submission) => (
-        <li key={submission.id}>
-          <strong>{submission.name}</strong>
-          {' — '}
-          {submission.email}
-        </li>
+<li key={submission.id}>
+  {submission.image && (
+    <img
+      src={submission.image}
+      alt={submission.name}
+      width={100}
+    />
+  )}
+
+  <div>
+    <strong>{submission.name}</strong>
+  </div>
+
+  <div>{submission.email}</div>
+
+  <div>{submission.country}</div>
+</li>
       ))}
     </ul>
   )}
