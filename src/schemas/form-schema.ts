@@ -8,6 +8,7 @@ name: z
   .min(2, 'Name must contain at least 2 characters')
   .refine(
     (value) =>
+      value.length > 0 &&
       value[0] === value[0].toUpperCase(),
     {
       message:
@@ -41,7 +42,7 @@ name: z
     ),
 confirmPassword: z.string(),
 
-  image: z.instanceof(File).optional(),
+  image: z.string().optional(),
 
 termsAccepted: z.boolean().refine((value) => value, {
   message: 'Terms must be accepted',

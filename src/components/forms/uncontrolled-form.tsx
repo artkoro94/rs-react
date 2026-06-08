@@ -55,6 +55,9 @@ export const UncontrolledForm = () => {
   gender: String(formData.get('gender')),
   country: String(formData.get('country')),
   password: String(formData.get('password')),
+  confirmPassword: String(
+  formData.get('confirmPassword')
+),
   image: imagePreview,
   termsAccepted: Boolean(
     formData.get('termsAccepted')
