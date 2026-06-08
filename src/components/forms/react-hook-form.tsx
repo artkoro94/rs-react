@@ -6,6 +6,7 @@ import { formSchema } from '../../schemas/form-schema';
 import { useFormStore } from '../../store/form-store';
 import type { FormData } from '../../types/form-data';
 import { createSubmissionMeta } from '../../utils/create-submission-meta';
+import { PasswordStrength } from './password-strength';
 
 type FormValues = z.input<typeof formSchema>;
 
@@ -13,6 +14,7 @@ export const ReactHookForm = () => {
 const {
   register,
   handleSubmit,
+  watch,
   formState: { errors },
 } = useForm<
   z.input<typeof formSchema>,
@@ -47,6 +49,8 @@ const submission: FormData = {
 
   addSubmission(submission);
 };
+
+const password = watch('password', '');
 
   return (
 <form onSubmit={handleSubmit(onSubmit)}>
@@ -156,6 +160,7 @@ const submission: FormData = {
   {errors.password && (
   <p>{String(errors.password.message)}</p>
 )}
+<PasswordStrength password={password} />
 </div>
 
 <div>
