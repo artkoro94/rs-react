@@ -24,7 +24,7 @@ export const formSchema = z.object({
       'Password must contain uppercase, lowercase and number'
     ),
 
-  image: z.any(),
+  image: z.any().optional(),
 
 termsAccepted: z.boolean().refine((value) => value, {
   message: 'Terms must be accepted',

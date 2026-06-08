@@ -1,7 +1,13 @@
+import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { COUNTRIES } from '../../constants/countries';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { formSchema } from '../../schemas/form-schema';
+import { useFormStore } from '../../store/form-store';
+import type { FormData } from '../../types/form-data';
+import { createSubmissionMeta } from '../../utils/create-submission-meta';
+
+type FormValues = z.infer<typeof formSchema>;
 
 export const ReactHookForm = () => {
 const {
@@ -12,12 +18,42 @@ const {
   resolver: zodResolver(formSchema),
 });
 
-  const onSubmit = (data: unknown) => {
-    console.log(data);
+const addSubmission = useFormStore(
+  (state) => state.addSubmission
+);
+
+const onSubmit = (data: FormValues) => {
+
+  const { id, createdAt } = createSubmissionMeta();
+
+const submission: FormData = {
+  id,
+  createdAt,
+
+  name: data.name,
+    age: Number(data.age),
+    email: data.email,
+    gender: data.gender,
+    country: data.country,
+    password: data.password,
+
+    image: '',
+    termsAccepted: data.termsAccepted,
   };
 
+  addSubmission(submission);
+};
+
   return (
-<form onSubmit={handleSubmit(onSubmit)}>
+<form
+  onSubmit={handleSubmit(
+    onSubmit,
+    (errors) => {
+      console.log('VALIDATION ERRORS');
+      console.log(errors);
+    }
+  )}
+>
   <div>
     <label htmlFor="name">Name</label>
 
