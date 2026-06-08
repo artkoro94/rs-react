@@ -27,6 +27,7 @@ const {
   register,
   handleSubmit,
   control,
+  reset,
   formState: { errors, isValid },
 } = useForm<FormValues>({
   resolver: zodResolver(formSchema),
@@ -77,6 +78,10 @@ const submission: FormData = {
   };
 
   addSubmission(submission);
+
+  reset();
+setImagePreview('');
+
   onSuccess();
 };
 

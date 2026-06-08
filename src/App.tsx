@@ -46,7 +46,9 @@ function App() {
   ) : (
     <ul>
       {submissions.map((submission) => (
-<li key={submission.id}>
+<li
+  key={submission.id}
+>
   {submission.image && (
     <img
       src={submission.image}
