@@ -69,7 +69,11 @@ function App() {
         isOpen={isHookFormOpen}
         onClose={() => setIsHookFormOpen(false)}
       >
-        <ReactHookForm />
+        <ReactHookForm
+          onSuccess={() => {
+    setIsHookFormOpen(false);
+  }}
+        />
       </Modal>
     </main>
   );

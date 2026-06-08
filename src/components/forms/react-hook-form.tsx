@@ -14,7 +14,13 @@ import { useWatch } from 'react-hook-form';
 
 type FormValues = z.input<typeof formSchema>;
 
-export const ReactHookForm = () => {
+interface ReactHookFormProps {
+  onSuccess: () => void;
+}
+
+export const ReactHookForm = ({
+  onSuccess,
+}: ReactHookFormProps) => {
   const [imagePreview, setImagePreview] =
   useState('');
 const {
@@ -71,6 +77,7 @@ const submission: FormData = {
   };
 
   addSubmission(submission);
+  onSuccess();
 };
 
 const password = useWatch({
