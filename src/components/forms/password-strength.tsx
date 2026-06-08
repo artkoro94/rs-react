@@ -11,10 +11,10 @@ export const PasswordStrength = ({
 
   return (
     <ul>
-      <li>{strength.hasLowercase ? 'Good' : 'Bad'} Lowercase</li>
-      <li>{strength.hasUppercase ? 'Good' : 'Bad'} Uppercase</li>
-      <li>{strength.hasNumber ? 'Good' : 'Bad'} Number</li>
-      <li>{strength.hasSpecial ? 'Good' : 'Bad'} Special character</li>
+      <li>{strength.hasLowercase ? '✓' : '✗'} Lowercase</li>
+      <li>{strength.hasUppercase ? '✓' : '✗'} Uppercase</li>
+      <li>{strength.hasNumber ? '✓' : '✗'} Number</li>
+      <li>{strength.hasSpecial ? '✓' : '✗'} Special character</li>
     </ul>
   );
 };
