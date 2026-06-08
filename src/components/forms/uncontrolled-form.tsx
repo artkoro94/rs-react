@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { COUNTRIES } from '../../constants/countries';
+
 export const UncontrolledForm = () => {
   const [imagePreview] = useState('');
 
@@ -47,12 +49,21 @@ export const UncontrolledForm = () => {
       <div>
         <label htmlFor="country">Country</label>
 
-        <select
-          id="country"
-          name="country"
-        >
-          <option value="">Select country</option>
-        </select>
+<select
+  id="country"
+  name="country"
+>
+  <option value="">Select country</option>
+
+  {COUNTRIES.map((country) => (
+    <option
+      key={country}
+      value={country}
+    >
+      {country}
+    </option>
+  ))}
+</select>
       </div>
 
       <div>
