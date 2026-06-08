@@ -1,12 +1,16 @@
 import { useForm } from 'react-hook-form';
 import { COUNTRIES } from '../../constants/countries';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { formSchema } from '../../schemas/form-schema';
 
 export const ReactHookForm = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+const {
+  register,
+  handleSubmit,
+  formState: { errors },
+} = useForm({
+  resolver: zodResolver(formSchema),
+});
 
   const onSubmit = (data: unknown) => {
     console.log(data);
@@ -35,6 +39,10 @@ export const ReactHookForm = () => {
     type="number"
     {...register('age')}
   />
+
+  {errors.age && (
+  <p>{String(errors.age.message)}</p>
+)}
 </div>
 
 <div>
@@ -45,6 +53,10 @@ export const ReactHookForm = () => {
     type="email"
     {...register('email')}
   />
+
+  {errors.email && (
+  <p>{String(errors.email.message)}</p>
+)}
 </div>
 
 <div>
@@ -66,6 +78,10 @@ export const ReactHookForm = () => {
       Female
     </option>
   </select>
+
+  {errors.gender && (
+  <p>{String(errors.gender.message)}</p>
+)}
 </div>
 
 <div>
@@ -88,6 +104,10 @@ export const ReactHookForm = () => {
       </option>
     ))}
   </select>
+
+  {errors.country && (
+  <p>{String(errors.country.message)}</p>
+)}
 </div>
 
 <div>
@@ -100,6 +120,10 @@ export const ReactHookForm = () => {
     type="password"
     {...register('password')}
   />
+
+  {errors.password && (
+  <p>{String(errors.password.message)}</p>
+)}
 </div>
 
 <div>
@@ -110,6 +134,10 @@ export const ReactHookForm = () => {
     />
     Accept Terms
   </label>
+
+  {errors.termsAccepted && (
+  <p>{String(errors.termsAccepted.message)}</p>
+)}
 </div>
 
   <button type="submit">
