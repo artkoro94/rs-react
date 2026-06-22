@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import type { PokemonCardData } from '../../shared/api/pokemon-api';
 import { useSelectedPokemonStore } from '../../store/selected-pokemon-store';
 interface PokemonCardProps {
@@ -29,10 +30,12 @@ const isPokemonSelected = useSelectedPokemonStore((state) =>
   aria-label={`Select ${pokemon.name}`}
 />
         <div className="pokemon-card__image-wrapper">
-          <img
+          <Image
             className="pokemon-card__image"
             src={pokemon.image}
             alt={pokemon.name}
+            width={200}
+            height={200}
           />
         </div>
 

@@ -26,8 +26,8 @@ describe('PokemonCard', () => {
     ).toBeInTheDocument();
 
     expect(screen.getByRole('img')).toHaveAttribute(
-      'src',
-      '/pikachu.png'
+      'alt',
+      pokemonMock.name
     );
   });
 

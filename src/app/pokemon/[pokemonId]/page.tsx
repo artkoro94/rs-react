@@ -3,6 +3,7 @@
 import { useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { usePokemonDetailsQuery } from '../../../hooks/use-pokemon-details-query';
+import Image from 'next/image';
 
 export default function PokemonDetailsPage() {
   const params = useParams();
@@ -43,10 +44,12 @@ export default function PokemonDetailsPage() {
       {!isLoading && !error && pokemon && (
         <>
           <div className="details-panel__content">
-            <img
+            <Image
               className="details-panel__image"
               src={pokemon.image}
               alt={pokemon.name}
+              width={300}
+              height={300}
             />
 
             <div>
