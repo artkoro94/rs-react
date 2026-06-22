@@ -1,4 +1,5 @@
 import { fetchPokemons } from './pokemon-api';
+import { describe, it, expect, vi } from 'vitest';
 
 const pikachuDetails = {
   id: 25,
