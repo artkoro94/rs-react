@@ -1,21 +1,21 @@
-import { NavLink } from 'react-router-dom';
+import Link from 'next/link';
 
 export const Header = () => {
   return (
-    <header className="header">
-      <NavLink className="header__logo" to="/?page=1">
-        Pokédex
-      </NavLink>
+  <header className="header">
+    <Link className="header__logo" href="/">
+      Pokédex
+    </Link>
 
-      <nav className="header__nav">
-        <NavLink className="header__link" to="/?page=1">
-          Home
-        </NavLink>
+    <nav className="header__nav">
+      <Link className="header__link" href="/">
+        Home
+      </Link>
 
-        <NavLink className="header__link" to="/about">
-          About
-        </NavLink>
-      </nav>
-    </header>
+      <Link className="header__link" href="/about">
+        About
+      </Link>
+    </nav>
+  </header>
   );
 };

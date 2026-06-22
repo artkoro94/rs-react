@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Header } from '../components/header';
 
 interface LayoutProps {
   children: ReactNode;
@@ -7,7 +8,10 @@ interface LayoutProps {
 export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }
