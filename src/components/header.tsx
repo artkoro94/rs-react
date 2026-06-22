@@ -1,20 +1,23 @@
-import { NavLink } from 'react-router-dom';
+import { useTranslations } from 'next-intl';
+import { Link } from '../i18n/navigation';
 
 export const Header = () => {
+  const t = useTranslations('Header');
+
   return (
     <header className="header">
-      <NavLink className="header__logo" to="/?page=1">
+      <Link className="header__logo" href="/">
         Pokédex
-      </NavLink>
+      </Link>
 
       <nav className="header__nav">
-        <NavLink className="header__link" to="/?page=1">
-          Home
-        </NavLink>
+        <Link className="header__link" href="/">
+          {t('home')}
+        </Link>
 
-        <NavLink className="header__link" to="/about">
-          About
-        </NavLink>
+        <Link className="header__link" href="/about">
+          {t('about')}
+        </Link>
       </nav>
     </header>
   );

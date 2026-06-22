@@ -1,4 +1,5 @@
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link } from '../../i18n/navigation';
+import Image from 'next/image';
 import type { PokemonCardData } from '../../shared/api/pokemon-api';
 import { useSelectedPokemonStore } from '../../store/selected-pokemon-store';
 interface PokemonCardProps {
@@ -6,8 +7,6 @@ interface PokemonCardProps {
 }
 
 export const PokemonCard = ({ pokemon }: PokemonCardProps) => {
-  const [searchParams] = useSearchParams();
-  const nextSearchParams = new URLSearchParams(searchParams);
 
   const togglePokemon = useSelectedPokemonStore(
   (state) => state.togglePokemon
@@ -17,14 +16,10 @@ const isPokemonSelected = useSelectedPokemonStore((state) =>
   state.isPokemonSelected(pokemon.id)
 );
 
-  if (!nextSearchParams.get('page')) {
-    nextSearchParams.set('page', '1');
-  }
-
   return (
     <Link
       className="pokemon-card"
-      to={`/pokemon/${pokemon.id}?${nextSearchParams.toString()}`}
+      href={`/pokemon/${pokemon.id}`}
     >
       <article className="pokemon-card__content">
         <input
@@ -35,10 +30,12 @@ const isPokemonSelected = useSelectedPokemonStore((state) =>
   aria-label={`Select ${pokemon.name}`}
 />
         <div className="pokemon-card__image-wrapper">
-          <img
+          <Image
             className="pokemon-card__image"
             src={pokemon.image}
             alt={pokemon.name}
+            width={200}
+            height={200}
           />
         </div>
 

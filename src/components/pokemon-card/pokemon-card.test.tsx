@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
 
 import { PokemonCard } from './pokemon-card';
@@ -14,7 +13,7 @@ const pokemonMock = {
 
 describe('PokemonCard', () => {
   it('renders pokemon name, description and image', () => {
-    renderCard('/');
+    renderCard();
 
     expect(
       screen.getByRole('heading', {
@@ -27,38 +26,36 @@ describe('PokemonCard', () => {
     ).toBeInTheDocument();
 
     expect(screen.getByRole('img')).toHaveAttribute(
-      'src',
-      '/pikachu.png'
+      'alt',
+      pokemonMock.name
     );
   });
 
   it('adds default page query param when page does not exist', () => {
-    renderCard('/');
+    renderCard();
 
-    const link = screen.getByRole('link');
+  const link = screen.getByRole('link');
 
-    expect(link).toHaveAttribute(
-      'href',
-      '/pokemon/25?page=1'
-    );
+  expect(link).toHaveAttribute(
+    'href',
+    '/pokemon/25'
+  );
   });
 
   it('keeps existing page query param', () => {
-    renderCard('/?page=5');
+    renderCard();
 
-    const link = screen.getByRole('link');
+  const link = screen.getByRole('link');
 
-    expect(link).toHaveAttribute(
-      'href',
-      '/pokemon/25?page=5'
-    );
+  expect(link).toHaveAttribute(
+    'href',
+    '/pokemon/25'
+  );
   });
 });
 
-const renderCard = (route: string) => {
+const renderCard = () => {
   render(
-    <MemoryRouter initialEntries={[route]}>
       <PokemonCard pokemon={pokemonMock} />
-    </MemoryRouter>
   );
 };

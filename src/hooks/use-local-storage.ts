@@ -7,6 +7,10 @@ export const useLocalStorage = <T>(
   initialValue: T
 ): [T, SetStoredValue<T>] => {
   const [storedValue, setStoredValue] = useState<T>(() => {
+    if (typeof window === 'undefined') {
+      return initialValue;
+    }
+
     const item = localStorage.getItem(key);
 
     if (!item) {
@@ -22,6 +26,10 @@ export const useLocalStorage = <T>(
 
   const setValue: SetStoredValue<T> = (value) => {
     setStoredValue(value);
+
+    if (typeof window === 'undefined') {
+      return;
+    }
 
     if (typeof value === 'string') {
       localStorage.setItem(key, value);

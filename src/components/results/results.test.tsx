@@ -1,4 +1,5 @@
-import { screen } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
 
 import { Results } from './results';
 import {
@@ -6,11 +7,10 @@ import {
   pikachuMock,
   pokemonListMock,
 } from '../../shared/test/pokemon-mocks';
-import { renderWithRouter } from '../../shared/test/render-with-router';
 
 describe('Results', () => {
   it('renders section title', () => {
-    renderWithRouter(<Results pokemons={[]} loading={false} error={null} />);
+    render(<Results pokemons={[]} loading={false} error={null} />);
 
     expect(
       screen.getByRole('heading', { name: 'Results' })
@@ -18,7 +18,7 @@ describe('Results', () => {
   });
 
   it('renders loading message while data is loading', () => {
-    renderWithRouter(<Results pokemons={[]} loading={true} error={null} />);
+    render(<Results pokemons={[]} loading={true} error={null} />);
 
     expect(screen.getByText('Loading...')).toBeInTheDocument();
   });
@@ -26,19 +26,19 @@ describe('Results', () => {
   it('renders error message when error exists', () => {
     const errorMessage = new Error('Failed to load pokemons');
 
-    renderWithRouter(<Results pokemons={[]} loading={false} error={errorMessage} />);
+    render(<Results pokemons={[]} loading={false} error={errorMessage} />);
 
     expect(screen.getByText('Could not load pokemons. Try another name.')).toBeInTheDocument();
   });
 
   it('renders empty message when there are no pokemons', () => {
-    renderWithRouter(<Results pokemons={[]} loading={false} error={null} />);
+    render(<Results pokemons={[]} loading={false} error={null} />);
 
     expect(screen.getByText('No pokemons found.')).toBeInTheDocument();
   });
 
   it('renders pokemon list when data exists', () => {
-    renderWithRouter(<Results pokemons={pokemonListMock} loading={false} error={null} />);
+    render(<Results pokemons={pokemonListMock} loading={false} error={null} />);
 
     expect(
       screen.getByRole('heading', { name: pikachuMock.name })
@@ -54,7 +54,7 @@ describe('Results', () => {
   });
 
   it('does not render pokemon list while loading', () => {
-    renderWithRouter(<Results pokemons={pokemonListMock} loading={true} error={null} />);
+    render(<Results pokemons={pokemonListMock} loading={true} error={null} />);
 
     expect(screen.getByText('Loading...')).toBeInTheDocument();
 
@@ -64,7 +64,7 @@ describe('Results', () => {
   });
 
 it('does not render empty message when error exists', () => {
-  renderWithRouter(
+  render(
     <Results
       pokemons={[]}
       loading={false}

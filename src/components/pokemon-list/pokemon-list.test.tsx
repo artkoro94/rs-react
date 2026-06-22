@@ -1,4 +1,5 @@
-import { screen } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
 
 import { PokemonList } from './pokemon-list';
 import {
@@ -6,11 +7,10 @@ import {
   pikachuMock,
   pokemonListMock,
 } from '../../shared/test/pokemon-mocks'
-import { renderWithRouter } from '../../shared/test/render-with-router';;
 
 describe('PokemonList', () => {
   it('renders pokemon cards from the list', () => {
-    renderWithRouter(<PokemonList pokemons={pokemonListMock} />);
+    render(<PokemonList pokemons={pokemonListMock} />);
 
     expect(
       screen.getByRole('heading', { name: pikachuMock.name })
@@ -26,7 +26,7 @@ describe('PokemonList', () => {
   });
 
   it('renders no pokemon cards when list is empty', () => {
-    renderWithRouter(<PokemonList pokemons={[]} />);
+    render(<PokemonList pokemons={[]} />);
 
     expect(screen.queryByRole('heading', { name: pikachuMock.name })).not.toBeInTheDocument();
   });

@@ -1,13 +1,14 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
-export const AboutPage = () => {
+export default function AboutPage() {
   return (
     <main className="app">
       <section className="page-card">
         <h1>About</h1>
 
         <p>
-          This app was created by @artkoro94 as part of the RS School React course.
+          This app was created by @artkoro94 as part of the RS School React
+          course.
         </p>
 
         <a
@@ -19,10 +20,10 @@ export const AboutPage = () => {
           RS School React Course
         </a>
 
-        <Link className="header__link" to="/?page=1">
+        <Link className="header__link" href="/">
           Back to app
         </Link>
       </section>
     </main>
   );
-};
+}

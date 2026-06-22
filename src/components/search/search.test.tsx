@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { describe, it, expect, vi } from 'vitest';
 
 import { Search } from './search';
 import { SEARCH_STORAGE_KEY } from '../../shared/constants/storage';

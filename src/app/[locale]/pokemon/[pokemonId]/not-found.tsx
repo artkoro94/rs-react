@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
-export const NotFoundPage = () => {
+export default function NotFound() {
   return (
     <main className="app">
       <section className="page-card">
@@ -8,10 +8,10 @@ export const NotFoundPage = () => {
 
         <p>Page was not found.</p>
 
-        <Link className="button" to="/?page=1">
+        <Link className="button" href="/">
           Back to app
         </Link>
       </section>
     </main>
   );
-};
+}
