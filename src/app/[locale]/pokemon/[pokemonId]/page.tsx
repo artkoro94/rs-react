@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { usePokemonDetailsQuery } from '../../../hooks/use-pokemon-details-query';
+import { usePokemonDetailsQuery } from '../../../../hooks/use-pokemon-details-query';
 import Image from 'next/image';
 
 export default function PokemonDetailsPage() {
