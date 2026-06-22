@@ -2,18 +2,29 @@ import type { ReactNode } from 'react';
 import { Header } from '../../components/header';
 import { Providers } from '../providers';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
 
 interface LayoutProps {
   children: ReactNode;
+  params: Promise<{
+    locale: string;
+  }>;
 }
 
 export default async function RootLayout({
   children,
+  params,
 }: LayoutProps) {
-  const messages = await getMessages();
+  const { locale } = await params;
+
+  const messages = (
+    await import(`../../messages/${locale}.json`)
+  ).default;
+
   return (
-    <NextIntlClientProvider messages={messages}>
+    <NextIntlClientProvider
+      locale={locale}
+      messages={messages}
+    >
       <Providers>
         <Header />
         {children}
